@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+    <property name="LOGS_ABSOLUTE_PATH" value="/opt/hijab/log/catalina"/>
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} %X{session.id} %X{attr.email} [%thread] %-5level %logger{36} - %msg%n"/>
+    <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <maxHistory>90</maxHistory>  <!-- 일자별 백업파일의 보관기간 -->
+            <!-- rollover daily -->
+            <fileNamePattern>${LOGS_ABSOLUTE_PATH}/catalina-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 10MB -->
+                <maxFileSize>1000MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <maxHistory>90</maxHistory>  <!-- 일자별 백업파일의 보관기간 -->
+            <!-- rollover daily -->
+            <fileNamePattern>${LOGS_ABSOLUTE_PATH}/error/error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 10MB -->
+                <maxFileSize>1000MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>${LOG_PATTERN}</pattern>
+        </layout>
+    </appender>
+
+    <!-- Loggers -->
+    <logger name="org.springframework">
+        <level value="info"/>
+    </logger>
+    <logger name="com.hijab" level="info">
+        <appender-ref ref="ERROR"/>
+    </logger>
+    <root level="info">
+        <appender-ref ref="ROLLING"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

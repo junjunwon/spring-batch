@@ -1,0 +1,120 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.0'
+	id 'io.spring.dependency-management' version '1.1.5'
+	id "org.asciidoctor.jvm.convert" version "3.3.2"
+}
+
+group = 'com.work'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '21'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	asciidoctorExt
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	snippetsDir = file('build/generated-snippets')
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'io.github.boostchicken:spring-data-dynamodb:5.2.5'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// jackson
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+	// jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	// aws
+	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
+	implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.12.118'
+	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.118'
+
+	// queryDSL
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+	// activeMQ
+	implementation 'org.apache.activemq:activemq-broker'
+	implementation 'org.springframework.boot:spring-boot-starter-activemq'
+	implementation 'org.apache.activemq:activemq-web-console:5.17.5'
+
+	// kafka
+	implementation 'org.springframework.kafka:spring-kafka'
+
+	// limit rate
+	implementation 'com.bucket4j:bucket4j-core:8.10.1'
+
+	// db
+	implementation 'org.postgresql:postgresql:42.5.0'
+	runtimeOnly 'com.h2database:h2'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+	implementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// swagger springdoc
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
+	asciidoctorExt "org.springframework.restdocs:spring-restdocs-asciidoctor:3.0.0"
+	testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc:3.0.0"
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+test {
+	outputs.dir snippetsDir
+}
+
+asciidoctor {
+	inputs.dir snippetsDir
+	configurations 'asciidoctorExt'
+	dependsOn test
+}
+
+asciidoctor.doFirst {
+	delete file("src/main/resources/static/docs")
+}
+
+bootJar {
+	dependsOn asciidoctor
+
+	copy {
+		enabled = true
+		from asciidoctor.outputDir
+		into "src/main/resources/static/docs"
+	}
+}
+jar {
+	enabled = false
+}

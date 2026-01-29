@@ -1,14 +1,8 @@
-﻿# 🧕 Hijab Project - Personal Color Analysis Backend
+﻿# Spring Batch Project
 
-퍼스널 컬러 분석을 위한 Spring Boot 백엔드 애플리케이션입니다.
+Spring Batch Application
 
-## 📋 프로젝트 구조
 
-1. **클라이언트 요청 시**: `color_analysis_request` 테이블에 `status = PENDING`으로 저장
-2. **Kafka에 메시지 전송**: 비동기 처리를 위한 메시지 큐 활용
-3. **분석 서버에서 결과 수신 후**: 외부 PCA 서버에서 분석 완료
-4. **DB 업데이트**: `status = DONE`, `result = ...`로 업데이트
-5. **SSE로 결과 push**: 실시간 결과 전송
 
 ## 🚀 빠른 시작
 
@@ -71,7 +65,7 @@ docker compose -f docker-compose-kafka.yml down -v
 docker exec -it kafka kafka-topics --bootstrap-server localhost:9092 --list
 
 # 토픽 상세 정보 확인
-docker exec -it kafka kafka-topics --bootstrap-server localhost:9092 --describe --topic color-analysis-topic
+docker exec -it kafka kafka-topics --bootstrap-server localhost:9092 --describe --topic example-topic
 
 # Kafka 로그 확인
 docker logs kafka
@@ -107,9 +101,6 @@ hijab/
 ## 🔧 주요 기능
 
 ### Kafka 메시징
-- **토픽**: `color-analysis-topic`
-- **메시지 타입**: `COLOR_ANALYSIS`
-- **비동기 처리**: 이미지 분석 요청을 비동기로 처리
 
 ### Server-Sent Events (SSE)
 - **실시간 결과 전송**: 분석 완료 시 클라이언트에 즉시 전송
@@ -139,27 +130,3 @@ hijab/
 - **[KAFKA_SETUP_README.md](KAFKA_SETUP_README.md)**: Docker부터 Kafka 설치 및 실행 방법
 - **[TEST_README.md](TEST_README.md)**: 테스트 관련 가이드
 - **[Info.md](Info.md)**: 프로젝트 정보
-
-## 🔒 보안 고려사항
-
-### 이미지 저장
-- 얼굴 이미지를 저장하거나 분석 후 삭제 여부를 결정해야 합니다
-- AWS S3와 같은 클라우드 스토리지 사용을 추천합니다
-
-### 성능 최적화
-- 분석 요청이 많을 경우 비동기 처리 및 캐싱 전략을 고려하세요
-- Kafka 파티션 수와 컨슈머 수를 조정하여 처리량을 최적화하세요
-
-### 데이터 보안
-- 사용자 데이터는 암호화하여 저장하며, 민감한 정보는 최소한으로 저장합니다
-- JWT 토큰을 통한 인증 및 권한 관리
-
-## 🤝 기여하기
-
-1. 이슈를 생성하여 버그나 개선사항을 보고하세요
-2. Fork하여 브랜치를 생성하고 변경사항을 커밋하세요
-3. Pull Request를 생성하여 변경사항을 제안하세요
-
----
-
-**Happy Coding! 🎉**# spring-batch
