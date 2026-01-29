@@ -92,13 +92,13 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: hijab_db
-      POSTGRES_USER: hijab_user
-      POSTGRES_PASSWORD: hijab_password
+      POSTGRES_DB: springbatch_db
+      POSTGRES_USER: springbatch_user
+      POSTGRES_PASSWORD: springbatch_password
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U hijab_user -d hijab_db"]
+      test: ["CMD-SHELL", "pg_isready -U springbatch_user -d springbatch_db"]
       interval: 10s
       timeout: 5s
       retries: 5

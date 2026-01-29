@@ -77,8 +77,8 @@ docker logs kafka
 ## 📁 프로젝트 구조
 
 ```
-hijab/
-├── src/main/java/com/hijab/
+springbatch/
+├── src/main/java/com/springbatch/
 │   ├── config/           # 설정 클래스들
 │   │   ├── KafkaConfig.java
 │   │   ├── ActiveMQConfig.java

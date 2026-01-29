@@ -100,7 +100,7 @@ java --version
 ### 1. 프로젝트 클론 및 이동
 
 ```bash
-cd /path/to/hijab/project
+cd /path/to/springbatch/project
 ```
 
 ### 2. Kafka 서비스 시작

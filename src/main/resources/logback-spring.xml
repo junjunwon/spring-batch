@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true">
-    <property name="LOGS_ABSOLUTE_PATH" value="/opt/hijab/log/catalina"/>
+    <!-- 로컬 개발 환경: 프로젝트 내부 logs 디렉토리 사용 -->
+    <!-- 프로덕션 환경: /opt/springbatch/log/catalina 사용 -->
+    <property name="LOGS_ABSOLUTE_PATH" value="${LOG_PATH:-./logs}"/>
     <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} %X{session.id} %X{attr.email} [%thread] %-5level %logger{36} - %msg%n"/>
     <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -40,7 +42,7 @@
     <logger name="org.springframework">
         <level value="info"/>
     </logger>
-    <logger name="com.hijab" level="info">
+    <logger name="com.springbatch" level="info">
         <appender-ref ref="ERROR"/>
     </logger>
     <root level="info">
